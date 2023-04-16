@@ -1,42 +1,10 @@
-# import math
-#
-# #         ------------------ task 01 ------------------------------
-# #  ---------------------- all values are known -------------------------
-# #
-# # d1 = input("Enter the shortest distance from lifesaver to shore, in yards: ")
-# # d2 = input("Enter the shortest distance from drowning person to shore, in feet: ")
-# # h = input("Enter vertical way from lifesaver to drowning person, in yards: ")
-# # v_sand = input("Enter lifesaver's velocity on foot, in miles per hour: ")
-# # n = input("Enter lifesaver velocity fall shore/water, in times: ")
-# # theta = input("Enter lifesaver's way angle, in grads: ")
-#
-# # theta_rad = float(theta) * math.pi / 180
-# # d1_foot = float(d1) * 3
-# # # print("d1 in feet:", d1_foot)
-# # # print(math.tan(theta_rad))
-# #
-# # # way by foot
-# # x = d1_foot * math.tan(float(theta_rad))
-# # len1 = math.sqrt(d1_foot ** 2 + x ** 2)
-# # print("Shortest way by shore", len1)
-# #
-# # # way by swim
-# # h_foot = float(h) * 3
-# # len2 = math.sqrt((h_foot - x) ** 2 + float(d2) ** 2)
-# # print("Shortest way by swimming", len2)
-# #
-# # # lifesaver time
-# # v_sand_feet_per_sec = float(v_sand) * 5280 / 3600
-# # time = 1 / v_sand_feet_per_sec * (len1 + float(n) * len2)
-# # print("Time in sec for all way to drowning person:{:5.1f} sec".format(time))
-#
-#
-# #          --------------------- task 2 ------------------------------
-# #              --------------- functions use ----------------
+# --------------------- task 3 -----------------------------
+
 import math
 import unittest
 
 import test
+from test import find_opt_angle
 
 
 def input_dist_feet(text):
@@ -65,19 +33,14 @@ h = input_dist_yards("from lifesaver to drowning man by vertical")
 v_sand = input_velocity("on shore")
 v_water = input_velocity("in water")
 n = v_sand / v_water
-theta = input_start_angle("lifesaver's way start")
 
-print(d1, d2, h, v_sand, v_water, n, theta)
+print(d1, d2, h, v_sand, v_water, n)
 
 
 # ---------------- check and format input data functions --------------
 
 def yards_to_feet(yards):
     return float(yards) * 3
-
-
-def angle_to_rad(grades):
-    return float(grades) * math.pi / 180
 
 
 def velocity_feet_sec(miles_hour):
@@ -91,10 +54,6 @@ d2_feet = d2
 h_feet = yards_to_feet(h)
 v_sand_feet_sec = velocity_feet_sec(v_sand)
 v_water_feet_sec = velocity_feet_sec(v_water)
-theta_rad = angle_to_rad(theta)
-
-
-# function to calculate distance
 
 
 def calc_vert_side(hor_side, alpha):
@@ -107,7 +66,8 @@ def calc_hypo(side_one, side_two):
     return hypo
 
 
-h1_feet = calc_vert_side(d1_feet, theta_rad)
+h1_feet = calc_vert_side(d1_feet, test.find_opt_angle(d1_feet, d2_feet, h_feet, n))
+print("#### optimized angle:", test.find_opt_angle(d1_feet, d2_feet, h_feet, n) * 180 / math.pi)
 h2_feet = h_feet - h1_feet
 
 length_shore = calc_hypo(d1_feet, h1_feet)
@@ -137,7 +97,7 @@ print("time_overall : ", time_overall, "sec")
 class TestCalculationMethods(unittest.TestCase):
     def test_calc_vert_side(self):
         hor_side = 1
-        alpha = 0 * math.pi / 180
+        alpha = 0
         self.assertEqual(round(calc_vert_side(hor_side, alpha), 5), 0)
         alpha = 45 * math.pi / 180
         self.assertEqual(round(calc_vert_side(hor_side, alpha), 5), 1)
@@ -145,6 +105,11 @@ class TestCalculationMethods(unittest.TestCase):
     def test_calc_hypo(self):
         side = 1
         self.assertEqual(calc_hypo(side, side), math.sqrt(2))
+
+    def test_opt_start_angle(self):
+        side = 1
+        n_same = 1
+        self.assertEqual(round(find_opt_angle(side, side, 2 * side, n_same), 3), round(45 * math.pi / 180, 3))
 
 
 if __name__ == '__main__':
