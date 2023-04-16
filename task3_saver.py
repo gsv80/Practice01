@@ -33,7 +33,6 @@ h = input_dist_yards("from lifesaver to drowning man by vertical")
 v_sand = input_velocity("on shore")
 v_water = input_velocity("in water")
 n = v_sand / v_water
-# theta = input_start_angle("lifesaver's way start")
 
 print(d1, d2, h, v_sand, v_water, n)
 
@@ -42,10 +41,6 @@ print(d1, d2, h, v_sand, v_water, n)
 
 def yards_to_feet(yards):
     return float(yards) * 3
-
-
-def angle_to_rad(grades):
-    return float(grades) * math.pi / 180
 
 
 def velocity_feet_sec(miles_hour):
@@ -59,15 +54,6 @@ d2_feet = d2
 h_feet = yards_to_feet(h)
 v_sand_feet_sec = velocity_feet_sec(v_sand)
 v_water_feet_sec = velocity_feet_sec(v_water)
-
-
-# theta_rad = angle_to_rad(theta)
-
-
-# try to find the best solution for the overall time
-
-
-# function to calculate distance
 
 
 def calc_vert_side(hor_side, alpha):
