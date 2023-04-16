@@ -34,6 +34,9 @@
 # #          --------------------- task 2 ------------------------------
 # #              --------------- functions use ----------------
 import math
+import unittest
+
+import test
 
 
 def input_dist_feet(text):
@@ -120,6 +123,29 @@ def time_calc(distance, velocity):
 time_shore = time_calc(length_shore, v_sand_feet_sec)
 time_water = time_calc(length_water, v_water_feet_sec)
 
-time_overall = time_shore + time_shore
+print("length_shore : {0} feet, v_sand_feet_sec : {1} feet/sec".format(length_shore, v_sand_feet_sec))
+print("time_shore : {0} sec".format(time_shore))
+print("length_water : {0} feet, v_water_feet_sec : {1} feet/sec".format(length_water, v_water_feet_sec))
+print("time_water : {0} sec".format(time_water))
+time_overall = time_shore + time_water
 
-print(time_overall, "sec")
+print("time_overall : ", time_overall, "sec")
+
+
+# unit tests
+
+class TestCalculationMethods(unittest.TestCase):
+    def test_calc_vert_side(self):
+        hor_side = 1
+        alpha = 0 * math.pi / 180
+        self.assertEqual(round(calc_vert_side(hor_side, alpha), 5), 0)
+        alpha = 45 * math.pi / 180
+        self.assertEqual(round(calc_vert_side(hor_side, alpha), 5), 1)
+
+    def test_calc_hypo(self):
+        side = 1
+        self.assertEqual(calc_hypo(side, side), math.sqrt(2))
+
+
+if __name__ == '__main__':
+    unittest.main()
